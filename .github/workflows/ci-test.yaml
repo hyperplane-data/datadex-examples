@@ -1,0 +1,28 @@
+name: Test notebooks
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+    paths-ignore:
+      - "README.md"
+
+jobs:
+  tests:
+    name: Test notebooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Install requirements
+        run: pip install -r requirements.txt -r requirements-test.txt
+
+      - name: Run tests
+        run: pytest --nbmake -vv examples/**/*ipynb
